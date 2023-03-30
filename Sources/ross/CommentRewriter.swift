@@ -9,6 +9,13 @@ final class CommentRewriter: SyntaxRewriter {
     newNode.trailingTrivia?.removeComments()
     return newNode
   }
+
+  override func visit(_ node: EnumCaseDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments()
+    newNode.trailingTrivia?.removeComments()
+    return DeclSyntax(newNode)
+  }
 }
 
 extension Trivia {
