@@ -8,7 +8,7 @@ let package = Package(
   products: [
     .executable(
       name: "ross",
-      targets: ["ross"]),
+      targets: ["ross"])
   ],
   dependencies: [
     .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.2"),
@@ -23,10 +23,10 @@ let package = Package(
         .product(name: "SwiftSyntax", package: "swift-syntax"),
       ]),
 
-      .testTarget(
-        name: "RossTests",
-        dependencies: [
-          "ross"
-        ]),
+    .testTarget(
+      name: "RossTests",
+      dependencies: [
+        "ross"
+      ]),
   ]
 )

@@ -5,7 +5,7 @@ import XCTest
 
 final class RossTests: XCTestCase {
 
-// MARK: Lifecycle
+  // MARK: Lifecycle
 
   override func setUp() async throws {
     try fileManager.createDirectory(at: examplesDirectory, withIntermediateDirectories: false)
@@ -24,35 +24,35 @@ final class RossTests: XCTestCase {
     let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
 
     let file = """
-    //===----------------------------------------------------------------------===//
-    //
-    // This source file is part of the Swift.org open source project
-    //
-    // Copyright (c) 2014 - 2019 Apple Inc. and the Swift project authors
-    // Licensed under Apache License v2.0 with Runtime Library Exception
-    //
-    // See https://swift.org/LICENSE.txt for license information
-    // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
-    //
-    //===----------------------------------------------------------------------===//
-    import Foundation
-    import SwiftSyntax
+      //===----------------------------------------------------------------------===//
+      //
+      // This source file is part of the Swift.org open source project
+      //
+      // Copyright (c) 2014 - 2019 Apple Inc. and the Swift project authors
+      // Licensed under Apache License v2.0 with Runtime Library Exception
+      //
+      // See https://swift.org/LICENSE.txt for license information
+      // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+      //
+      //===----------------------------------------------------------------------===//
+      import Foundation
+      import SwiftSyntax
 
-    /// This class takes the raw source text and scans through it searching for comments that instruct
-    /// the formatter to change the status of rules for the following node. The comments may include no
-    /// rule names to affect all rules, a single rule name to affect that rule, or a comma delimited
-    /// list of rule names to affect a number of rules. Ignore is the only supported operation.
-    public class RuleMask {
-    /// Stores the source ranges in which all rules are ignored.
-    private var allRulesIgnoredRanges: [SourceRange] = []
+      /// This class takes the raw source text and scans through it searching for comments that instruct
+      /// the formatter to change the status of rules for the following node. The comments may include no
+      /// rule names to affect all rules, a single rule name to affect that rule, or a comma delimited
+      /// list of rule names to affect a number of rules. Ignore is the only supported operation.
+      public class RuleMask {
+      /// Stores the source ranges in which all rules are ignored.
+      private var allRulesIgnoredRanges: [SourceRange] = []
 
-    /// Map of rule names to list ranges in the source where the rule is ignored.
-    private var ruleMap: [String: [SourceRange]] = [:]
+      /// Map of rule names to list ranges in the source where the rule is ignored.
+      private var ruleMap: [String: [SourceRange]] = [:]
 
-    /// Used to compute line numbers of syntax nodes.
-    private let sourceLocationConverter: SourceLocationConverter
-    }
-    """
+      /// Used to compute line numbers of syntax nodes.
+      private let sourceLocationConverter: SourceLocationConverter
+      }
+      """
 
     XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
 
@@ -60,35 +60,35 @@ final class RossTests: XCTestCase {
     try await cli.run()
 
     let expected = #"""
-    //===----------------------------------------------------------------------===//
-    //
-    // This source file is part of the Swift.org open source project
-    //
-    // Copyright (c) 2014 - 2019 Apple Inc. and the Swift project authors
-    // Licensed under Apache License v2.0 with Runtime Library Exception
-    //
-    // See https://swift.org/LICENSE.txt for license information
-    // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
-    //
-    //===----------------------------------------------------------------------===//
-    import Foundation
-    import SwiftSyntax
+      //===----------------------------------------------------------------------===//
+      //
+      // This source file is part of the Swift.org open source project
+      //
+      // Copyright (c) 2014 - 2019 Apple Inc. and the Swift project authors
+      // Licensed under Apache License v2.0 with Runtime Library Exception
+      //
+      // See https://swift.org/LICENSE.txt for license information
+      // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+      //
+      //===----------------------------------------------------------------------===//
+      import Foundation
+      import SwiftSyntax
 
 
 
 
 
-    public class RuleMask {
+      public class RuleMask {
 
-    private var allRulesIgnoredRanges: [SourceRange] = []
-
-
-    private var ruleMap: [String: [SourceRange]] = [:]
+      private var allRulesIgnoredRanges: [SourceRange] = []
 
 
-    private let sourceLocationConverter: SourceLocationConverter
-    }
-    """#
+      private var ruleMap: [String: [SourceRange]] = [:]
+
+
+      private let sourceLocationConverter: SourceLocationConverter
+      }
+      """#
 
     let actual = try String(contentsOf: fileURL, encoding: .utf8)
     XCTAssertEqual(actual, expected)
@@ -98,18 +98,18 @@ final class RossTests: XCTestCase {
     let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
 
     let file = """
-    /// The enablement of a lint/format rule based on the presence or absence of comment directives in
-    /// the source file.
-    public enum RuleState {
+      /// The enablement of a lint/format rule based on the presence or absence of comment directives in
+      /// the source file.
+      public enum RuleState {
 
-    /// There is no explicit information in the source file about whether the rule should be enable
-    /// or disabled at the requested location, so the configuration default should be used
-    case `default`
+      /// There is no explicit information in the source file about whether the rule should be enable
+      /// or disabled at the requested location, so the configuration default should be used
+      case `default`
 
-    /// The rule is explicitly disabled at the requested location.
-    case disabled
-    }
-    """
+      /// The rule is explicitly disabled at the requested location.
+      case disabled
+      }
+      """
 
     XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
 
@@ -119,16 +119,16 @@ final class RossTests: XCTestCase {
     let expected = #"""
 
 
-    public enum RuleState {
+      public enum RuleState {
 
 
 
-    case `default`
+      case `default`
 
 
-    case disabled
-    }
-    """#
+      case disabled
+      }
+      """#
 
     let actual = try String(contentsOf: fileURL, encoding: .utf8)
     XCTAssertEqual(actual, expected)
@@ -138,19 +138,19 @@ final class RossTests: XCTestCase {
     let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
 
     let file = """
-    /**
-    Registers a handler in an `Application` for a given path.
+      /**
+      Registers a handler in an `Application` for a given path.
 
-    - Parameters:
-      - app: The `Application` to register the handler in.
-      - path: The path to register the handler for.
-    */
-    public func register(in app: Application, for path: String) {
-      app.on(method, path.pathComponents) { [handle] req async throws in
-        try await handle(req)
+      - Parameters:
+        - app: The `Application` to register the handler in.
+        - path: The path to register the handler for.
+      */
+      public func register(in app: Application, for path: String) {
+        app.on(method, path.pathComponents) { [handle] req async throws in
+          try await handle(req)
+        }
       }
-    }
-    """
+      """
 
     XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
 
@@ -159,12 +159,12 @@ final class RossTests: XCTestCase {
 
     let expected = """
 
-    public func register(in app: Application, for path: String) {
-      app.on(method, path.pathComponents) { [handle] req async throws in
-        try await handle(req)
+      public func register(in app: Application, for path: String) {
+        app.on(method, path.pathComponents) { [handle] req async throws in
+          try await handle(req)
+        }
       }
-    }
-    """
+      """
 
     let actual = try String(contentsOf: fileURL, encoding: .utf8)
     XCTAssertEqual(actual, expected)
