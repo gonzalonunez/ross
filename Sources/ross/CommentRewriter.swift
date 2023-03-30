@@ -1,6 +1,7 @@
 import Foundation
 import SwiftSyntax
 
+/// A `SyntaxRewriter` that removes comments from `DeclModifierSyntax` and `EnumCaseDeclSyntax` nodes.
 final class CommentRewriter: SyntaxRewriter {
 
   override func visit(_ node: DeclModifierSyntax) -> DeclModifierSyntax {
@@ -20,6 +21,7 @@ final class CommentRewriter: SyntaxRewriter {
 
 extension Trivia {
 
+  /// Removes all comments from the trivia.
   mutating func removeComments() {
     self = .init(pieces: pieces.filter({ !$0.isComment }))
   }
@@ -27,6 +29,7 @@ extension Trivia {
 
 extension TriviaPiece {
 
+  /// Returns `true` if the trivia piece is a comment.
   var isComment: Bool {
     switch self {
     case .blockComment, .lineComment, .docBlockComment, .docLineComment:
@@ -36,3 +39,4 @@ extension TriviaPiece {
     }
   }
 }
+
