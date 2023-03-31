@@ -27,6 +27,13 @@ final class CommentRewriter: SyntaxRewriter {
     newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
     return DeclSyntax(newNode)
   }
+
+  override func visit(_ node: FunctionDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
 }
 
 extension Trivia {

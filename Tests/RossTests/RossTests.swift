@@ -214,6 +214,96 @@ final class RossTests: XCTestCase {
     XCTAssertEqual(actual, expected)
   }
 
+  func testFreeFunction() async throws {
+    let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
+
+    let file = #"""
+      extension ArgumentError: CustomStringConvertible {
+          public var description: String {
+              switch self {
+              case .missingValue(let key):
+                  return "missing value for '\(key)'"
+              case .invalidType(let value, let type, let argument):
+                  return (argument == nil)
+                      ? "'\(value)' is not a valid '\(type)'"
+                      : "'\(value)' is not a valid '\(type)' for '\(argument!)'"
+              case .unsupportedArgument(let argument):
+                  return "unsupported argument '\(argument)'"
+              }
+          }
+      }
+
+      /// Type-checked parsing of the argument value.
+      ///
+      /// - Returns: Typed value of the argument converted using the `parse` function.
+      ///
+      /// - Throws: `ArgumentError.invalidType` when the conversion fails.
+      func checked<T>(
+          _ parse: (String) throws -> T?,
+          _ value: String,
+          argument: String? = nil
+      ) throws -> T {
+          if let t = try parse(value) { return t }
+          var type = "\(T.self)"
+          if type.starts(with: "Optional<") {
+              let s = type.index(after: type.firstIndex(of: "<")!)
+              let e = type.index(before: type.endIndex) // ">"
+              type = String(type[s ..< e]) // strip Optional< >
+          }
+          throw ArgumentError.invalidType(
+              value: value, type: type, argument: argument
+          )
+      }
+      """#
+
+    XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
+
+    var cli = Ross(directory: examplesDirectory.path)
+    try await cli.run()
+
+    let expected = #"""
+      extension ArgumentError: CustomStringConvertible {
+          public var description: String {
+              switch self {
+              case .missingValue(let key):
+                  return "missing value for '\(key)'"
+              case .invalidType(let value, let type, let argument):
+                  return (argument == nil)
+                      ? "'\(value)' is not a valid '\(type)'"
+                      : "'\(value)' is not a valid '\(type)' for '\(argument!)'"
+              case .unsupportedArgument(let argument):
+                  return "unsupported argument '\(argument)'"
+              }
+          }
+      }
+
+      
+      
+      
+      
+      
+      func checked<T>(
+          _ parse: (String) throws -> T?,
+          _ value: String,
+          argument: String? = nil
+      ) throws -> T {
+          if let t = try parse(value) { return t }
+          var type = "\(T.self)"
+          if type.starts(with: "Optional<") {
+              let s = type.index(after: type.firstIndex(of: "<")!)
+              let e = type.index(before: type.endIndex) // ">"
+              type = String(type[s ..< e]) // strip Optional< >
+          }
+          throw ArgumentError.invalidType(
+              value: value, type: type, argument: argument
+          )
+      }
+      """#
+
+    let actual = try String(contentsOf: fileURL, encoding: .utf8)
+    XCTAssertEqual(actual, expected)
+  }
+
   // MARK: Private
 
   private let fileManager = FileManager.default
