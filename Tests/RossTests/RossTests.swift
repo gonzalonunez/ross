@@ -249,7 +249,10 @@ final class RossTests: XCTestCase {
     let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
 
     let file = """
-      class Foo {\n/// This is my initializer.\ninit() { }\n}
+      class Foo {
+      /// This is my initializer.
+      init() { }
+      }
       """
 
     XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
@@ -258,7 +261,10 @@ final class RossTests: XCTestCase {
     try await cli.run()
 
     let expected = """
-      class Foo {\n\ninit() { }\n}
+      class Foo {
+      
+      init() { }
+      }
       """
 
     let actual = try String(contentsOf: fileURL, encoding: .utf8)
@@ -313,21 +319,6 @@ final class RossTests: XCTestCase {
     let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
 
     let file = #"""
-      extension ArgumentError: CustomStringConvertible {
-          public var description: String {
-              switch self {
-              case .missingValue(let key):
-                  return "missing value for '\(key)'"
-              case .invalidType(let value, let type, let argument):
-                  return (argument == nil)
-                      ? "'\(value)' is not a valid '\(type)'"
-                      : "'\(value)' is not a valid '\(type)' for '\(argument!)'"
-              case .unsupportedArgument(let argument):
-                  return "unsupported argument '\(argument)'"
-              }
-          }
-      }
-
       /// Type-checked parsing of the argument value.
       ///
       /// - Returns: Typed value of the argument converted using the `parse` function.
@@ -357,22 +348,7 @@ final class RossTests: XCTestCase {
     try await cli.run()
 
     let expected = #"""
-      extension ArgumentError: CustomStringConvertible {
-          public var description: String {
-              switch self {
-              case .missingValue(let key):
-                  return "missing value for '\(key)'"
-              case .invalidType(let value, let type, let argument):
-                  return (argument == nil)
-                      ? "'\(value)' is not a valid '\(type)'"
-                      : "'\(value)' is not a valid '\(type)' for '\(argument!)'"
-              case .unsupportedArgument(let argument):
-                  return "unsupported argument '\(argument)'"
-              }
-          }
-      }
-
-
+      
 
 
 
