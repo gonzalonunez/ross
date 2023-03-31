@@ -206,7 +206,7 @@ final class RossTests: XCTestCase {
     try await cli.run()
 
     let expected = """
-      
+
       private let fileManager = FileManager.default
       """
 
