@@ -30,6 +30,11 @@ final class CommentRewriter: SyntaxRewriter {
     DeclSyntax(node.cleaned(shouldRemovePlainComments: shouldRemovePlainComments))
   }
 
+  // Imports are a special case. We want to preserve header comments.
+  override func visit(_ node: ImportDeclSyntax) -> DeclSyntax {
+    DeclSyntax(node)
+  }
+
   override func visit(_ node: DeinitializerDeclSyntax) -> DeclSyntax {
     DeclSyntax(node.cleaned(shouldRemovePlainComments: shouldRemovePlainComments))
   }

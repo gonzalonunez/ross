@@ -60,17 +60,17 @@ final class RossTests: XCTestCase {
     try await cli.run()
 
     let expected = #"""
-
-
-
-
-
-
-
-
-
-
-
+      //===----------------------------------------------------------------------===//
+      //
+      // This source file is part of the Swift.org open source project
+      //
+      // Copyright (c) 2014 - 2019 Apple Inc. and the Swift project authors
+      // Licensed under Apache License v2.0 with Runtime Library Exception
+      //
+      // See https://swift.org/LICENSE.txt for license information
+      // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+      //
+      //===----------------------------------------------------------------------===//
       import Foundation
       import SwiftSyntax
 
@@ -368,6 +368,38 @@ final class RossTests: XCTestCase {
               value: value, type: type, argument: argument
           )
       }
+      """#
+
+    let actual = try String(contentsOf: fileURL, encoding: .utf8)
+    XCTAssertEqual(actual, expected)
+  }
+
+  func test_PreservesHeaderComment() async throws {
+    let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
+
+    let file = #"""
+      /**
+      *  Plot
+      *  Copyright (c) John Sundell 2019
+      *  MIT license, see LICENSE file for details
+      */
+
+      import Foundation
+      """#
+
+    XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
+
+    var cli = Ross(directory: examplesDirectory.path)
+    try await cli.run()
+
+    let expected = #"""
+      /**
+      *  Plot
+      *  Copyright (c) John Sundell 2019
+      *  MIT license, see LICENSE file for details
+      */
+
+      import Foundation
       """#
 
     let actual = try String(contentsOf: fileURL, encoding: .utf8)
