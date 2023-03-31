@@ -1,5 +1,9 @@
 # Ross 🧼
 
+![](https://github.com/gonzalonunez/ross/actions/workflows/build.yml/badge.svg)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fgonzalonunez%2Fross%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/gonzalonunez/ross)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fgonzalonunez%2Fross%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/gonzalonunez/ross)
+
 Ross is a Swift command-line tool to remove all comments from Swift code.
 
 ```diff
