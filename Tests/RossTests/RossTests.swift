@@ -168,7 +168,6 @@ final class RossTests: XCTestCase {
     XCTAssertEqual(actual, expected)
   }
 
-
   func testEnum() async throws {
     let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
 
@@ -262,7 +261,7 @@ final class RossTests: XCTestCase {
 
     let expected = """
       class Foo {
-      
+
       init() { }
       }
       """
@@ -348,7 +347,7 @@ final class RossTests: XCTestCase {
     try await cli.run()
 
     let expected = #"""
-      
+
 
 
 
