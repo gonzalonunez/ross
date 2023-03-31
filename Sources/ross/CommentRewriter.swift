@@ -14,11 +14,39 @@ final class CommentRewriter: SyntaxRewriter {
   /// Whether or not to remove plain comments.
   let shouldRemovePlainComments: Bool
 
+  override func visit(_ node: ActorDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: AssociatedtypeDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
   override func visit(_ node: DeclModifierSyntax) -> DeclModifierSyntax {
     var newNode = node
     newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
     newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
     return newNode
+  }
+
+  override func visit(_ node: DeinitializerDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
   }
 
   override func visit(_ node: EnumCaseDeclSyntax) -> DeclSyntax {
@@ -28,7 +56,63 @@ final class CommentRewriter: SyntaxRewriter {
     return DeclSyntax(newNode)
   }
 
+  override func visit(_ node: EnumDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: ExtensionDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
   override func visit(_ node: FunctionDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: InitializerDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: MissingDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: ProtocolDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: TypealiasDeclSyntax) -> DeclSyntax {
+    var newNode = node
+    newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
+    return DeclSyntax(newNode)
+  }
+
+  override func visit(_ node: VariableDeclSyntax) -> DeclSyntax {
     var newNode = node
     newNode.leadingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
     newNode.trailingTrivia?.removeComments(shouldRemovePlainComments: shouldRemovePlainComments)
