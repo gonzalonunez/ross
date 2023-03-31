@@ -60,6 +60,80 @@ final class RossTests: XCTestCase {
     try await cli.run()
 
     let expected = #"""
+
+
+
+
+
+
+
+
+
+
+
+      import Foundation
+      import SwiftSyntax
+
+
+
+
+
+      public class RuleMask {
+
+      private var allRulesIgnoredRanges: [SourceRange] = []
+
+
+      private var ruleMap: [String: [SourceRange]] = [:]
+
+
+      private let sourceLocationConverter: SourceLocationConverter
+      }
+      """#
+
+    let actual = try String(contentsOf: fileURL, encoding: .utf8)
+    XCTAssertEqual(actual, expected)
+  }
+
+  func testClassPreservingPlain() async throws {
+    let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
+
+    let file = """
+      //===----------------------------------------------------------------------===//
+      //
+      // This source file is part of the Swift.org open source project
+      //
+      // Copyright (c) 2014 - 2019 Apple Inc. and the Swift project authors
+      // Licensed under Apache License v2.0 with Runtime Library Exception
+      //
+      // See https://swift.org/LICENSE.txt for license information
+      // See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors
+      //
+      //===----------------------------------------------------------------------===//
+      import Foundation
+      import SwiftSyntax
+
+      /// This class takes the raw source text and scans through it searching for comments that instruct
+      /// the formatter to change the status of rules for the following node. The comments may include no
+      /// rule names to affect all rules, a single rule name to affect that rule, or a comma delimited
+      /// list of rule names to affect a number of rules. Ignore is the only supported operation.
+      public class RuleMask {
+      /// Stores the source ranges in which all rules are ignored.
+      private var allRulesIgnoredRanges: [SourceRange] = []
+
+      /// Map of rule names to list ranges in the source where the rule is ignored.
+      private var ruleMap: [String: [SourceRange]] = [:]
+
+      /// Used to compute line numbers of syntax nodes.
+      private let sourceLocationConverter: SourceLocationConverter
+      }
+      """
+
+    XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
+
+    var cli = Ross(directory: examplesDirectory.path, shouldRemovePlainComments: false)
+    try await cli.run()
+
+    let expected = #"""
       //===----------------------------------------------------------------------===//
       //
       // This source file is part of the Swift.org open source project
@@ -93,6 +167,7 @@ final class RossTests: XCTestCase {
     let actual = try String(contentsOf: fileURL, encoding: .utf8)
     XCTAssertEqual(actual, expected)
   }
+
 
   func testEnum() async throws {
     let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
@@ -164,6 +239,26 @@ final class RossTests: XCTestCase {
           try await handle(req)
         }
       }
+      """
+
+    let actual = try String(contentsOf: fileURL, encoding: .utf8)
+    XCTAssertEqual(actual, expected)
+  }
+
+  func testInitializer() async throws {
+    let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
+
+    let file = """
+      class Foo {\n/// This is my initializer.\ninit() { }\n}
+      """
+
+    XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
+
+    var cli = Ross(directory: examplesDirectory.path)
+    try await cli.run()
+
+    let expected = """
+      class Foo {\n\ninit() { }\n}
       """
 
     let actual = try String(contentsOf: fileURL, encoding: .utf8)

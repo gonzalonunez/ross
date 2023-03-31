@@ -31,7 +31,7 @@ struct RossRunner {
    - Parameter directoryURL: The URL of the directory to clean.
    */
   private func cleanFiles(in directoryURL: URL) async throws {
-    try await withThrowingTaskGroup(of: Void.self) { group in
+//    try await withThrowingTaskGroup(of: Void.self) { group in
       guard let enumerator = fileManager.enumerator(atPath: directoryURL.path) else {
         throw RossRunnerError.failedToCreateEnumerator
       }
@@ -40,14 +40,14 @@ struct RossRunner {
         guard file.hasSuffix(".swift") else {
           continue
         }
-        group.addTask {
+//        group.addTask {
           let fileURL = directoryURL.appendingPathComponent(file)
           try await cleanFile(at: fileURL)
-        }
+//        }
       }
 
-      try await group.waitForAll()
-    }
+//      try await group.waitForAll()
+//    }
   }
 
   /**
