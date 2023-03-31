@@ -20,14 +20,16 @@ public func register(in app: Application, for path: String) {
 ## Basic usage
 
 ```
-swift run ross <directory>
+swift run ross <directory> [--remove-plain <remove-plain>]
 ```
 
 ```
 ARGUMENTS:
-  <directory>             The folder whose contents you want to remove comments from
+  <directory>             The folder whose contents you want to remove comments from.
 
 OPTIONS:
+  --remove-plain <remove-plain>
+                          Whether or not Ross should remove plain comments. (default: true)
   -h, --help              Show help information.
 ```
 
