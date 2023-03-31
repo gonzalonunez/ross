@@ -170,6 +170,50 @@ final class RossTests: XCTestCase {
     XCTAssertEqual(actual, expected)
   }
 
+  func testPreservePlain() async throws {
+    let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
+
+    let file = """
+      // This is a plain comment, let us make sure it is preserved
+      private let fileManager = FileManager.default
+      """
+
+    XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
+
+    var cli = Ross(directory: examplesDirectory.path, shouldRemovePlainComments: false)
+    try await cli.run()
+
+    let expected = """
+      // This is a plain comment, let us make sure it is preserved
+      private let fileManager = FileManager.default
+      """
+
+    let actual = try String(contentsOf: fileURL, encoding: .utf8)
+    XCTAssertEqual(actual, expected)
+  }
+
+  func testRemovePlain() async throws {
+    let fileURL = examplesDirectory.appendingPathComponent("Test.swift")
+
+    let file = """
+      // This is a plain comment, let us make sure it is preserved
+      private let fileManager = FileManager.default
+      """
+
+    XCTAssert(fileManager.createFile(atPath: fileURL.path, contents: file.data(using: .utf8)))
+
+    var cli = Ross(directory: examplesDirectory.path)
+    try await cli.run()
+
+    let expected = """
+      
+      private let fileManager = FileManager.default
+      """
+
+    let actual = try String(contentsOf: fileURL, encoding: .utf8)
+    XCTAssertEqual(actual, expected)
+  }
+
   // MARK: Private
 
   private let fileManager = FileManager.default

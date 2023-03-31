@@ -7,6 +7,9 @@ struct RossRunner {
 
   // MARK: Internal
 
+  /// Whether or not Ross should remove plain comments.
+  var shouldRemovePlainComments: Bool
+
   /**
    Runs Ross on Swift files in a given directory.
 
@@ -58,7 +61,7 @@ struct RossRunner {
     let source = try String(contentsOf: fileURL, encoding: .utf8)
     let sourceFile = Parser.parse(source: source)
 
-    let visitor = CommentRewriter()
+    let visitor = CommentRewriter(shouldRemovePlainComments: shouldRemovePlainComments)
     let newSyntax = visitor.visit(sourceFile)
 
     var newContent = ""
