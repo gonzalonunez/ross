@@ -21,6 +21,9 @@ public func register(in app: Application, for path: String) {
 }
 ```
 
+> **Warning**
+> Right now, Ross almost certainly won't remove all of the comments that you are interested in removing. If you find a comment left behind, please file an issue so that we can add the appropriate specialized version of the `visit(_:)` function along with a test case.
+
 ## Basic usage
 
 ```
